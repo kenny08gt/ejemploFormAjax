@@ -1,0 +1,55 @@
+//vista HTML
+<form id="eu_recha" >
+  <input type="text" id="foto_id" name="foto_name" placeholder="mandarle foto a mi chavo">
+  // Puede ser un input tipo submit o un button con tipo submit si necesita hacer el request normal, osea que se recargue la pagina
+  //<button type="submit">Mandar Foto</button>
+  //<input type="submit" value="Mandar Foto">
+
+  //hacerlo type button si se quiere hacer el request por ajax, para no recargar la pagin
+  <button type="button" onClick="enviar_foto()">Mandar Foto</button>
+</form>
+
+
+<script>
+  function enviar_foto(){
+    //si tiene la info en un formulario puede jalarla con el id y serializarla, esto funciona solo con texto, no con archivos
+    //Si se utiliza serialize o se manda el request normal sin ajax, en php
+    //puede acceder al valor del campo con el nombre de foto_name, el id es solo para jquery o css
+    var formData = $("#eu_recha").serialize(); //Esto es jquery, se utiliza # antes del nombre si es un id
+
+    //se puede obtener la data directa de los input o textarea
+    var foto = $("#foto_id").val();
+    var formData = new FormData();
+    formData.append("foto",foto);
+
+    //o se puede mandar direcata la data en la parte de ajax
+
+    // ajax si se manda la data en variable
+    $.ajax({
+      type: "POST",  //PUEDE ser get, put, post, update, delete, cualquier metodo http
+      url: "http://superServidorDelaChava.com/mandarFotoAMiChavo",
+      data: formData,
+      success: function(data){
+        alert("La foto se envio mostrando que si lo quiero ^^");
+      },
+      error: function(data){
+        alert("Hubo un error! debo mostrarle que lo quiero :(");
+      }
+    });
+
+    // ajax si se manda la data en el ajax directo
+    $.ajax({
+      type: "POST",  //PUEDE ser get, put, post, update, delete, cualquier metodo http
+      url: "http://superServidorDelaChava.com/mandarFotoAMiChavo",
+      data:{
+        foto: foto
+      },
+      success: function(data){
+        alert("La foto se envio mostrando que si lo quiero ^^");
+      },
+      error: function(data){
+        alert("Hubo un error! debo mostrarle que lo quiero :(");
+      }
+    });
+  }
+</script>
